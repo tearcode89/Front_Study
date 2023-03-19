@@ -24,6 +24,7 @@ import {
     ZipcodeWrapper
 } from "../../../styles/emotion";
 import { gql, useMutation } from '@apollo/client'
+import { useRouter } from 'next/router'
 
 const CREATE_BOARD = gql`
     mutation createBoard($createBoardInput: CreateBoardInput!){
@@ -34,6 +35,8 @@ const CREATE_BOARD = gql`
 `
 
 export default function BoardWriteUI() {
+    const router = useRouter()
+
     const [writer, setWriter] = useState("");
     const [password, setPassword] = useState("");
     const [title, setTitle] = useState("");
@@ -88,17 +91,22 @@ export default function BoardWriteUI() {
             setContentsError("내용을 입력해주세요.");
         }
         if (writer && password && title && contents) {
-            const result = await createBoard({
-                variables: {
-                    createBoardInput: {
-                        writer: writer,
-                        password: password,
-                        title: title,
-                        contents: contents
+            try {
+                const result = await createBoard({
+                    variables: {
+                        createBoardInput: {
+                            writer,
+                            password,
+                            title,
+                            contents
+                        }
                     }
-                }
-            })
-            console.log(result)
+                })
+                console.log(result.data.createBoard._id)
+                router.push(`/boards/${result.data.createBoard._id}`)
+            } catch(error) {
+                alert(error.message)
+            }
         }
     };
 
@@ -108,37 +116,37 @@ export default function BoardWriteUI() {
             <WriterWrapper>
                 <InputWrapper>
                     <Label>작성자</Label>
-                    <Writer type="text" placeholder="이름을 적어주세요." onChange={onChangeWriter}/>
+                    <Writer type="text" placeholder="이름을 적어주세요." onChange={onChangeWriter} />
                     <Error>{writerError}</Error>
                 </InputWrapper>
                 <InputWrapper>
                     <Label>비밀번호</Label>
-                    <Password type="password" placeholder="비밀번호를 작성해주세요." onChange={onChangePassword}/>
+                    <Password type="password" placeholder="비밀번호를 작성해주세요." onChange={onChangePassword} />
                     <Error>{passwordError}</Error>
                 </InputWrapper>
             </WriterWrapper>
             <InputWrapper>
                 <Label>제목</Label>
-                <Subject type="text" placeholder="제목을 작성해주세요." onChange={onChangeTitle}/>
+                <Subject type="text" placeholder="제목을 작성해주세요." onChange={onChangeTitle} />
                 <Error>{titleError}</Error>
             </InputWrapper>
             <InputWrapper>
                 <Label>내용</Label>
-                <Contents placeholder="내용을 작성해주세요." onChange={onChangeContents}/>
+                <Contents placeholder="내용을 작성해주세요." onChange={onChangeContents} />
                 <Error>{contentsError}</Error>
             </InputWrapper>
             <InputWrapper>
                 <Label>주소</Label>
                 <ZipcodeWrapper>
-                    <Zipcode placeholder="07250"/>
+                    <Zipcode placeholder="07250" />
                     <SearchButton>우편번호 검색</SearchButton>
                 </ZipcodeWrapper>
-                <Address/>
-                <Address/>
+                <Address />
+                <Address />
             </InputWrapper>
             <InputWrapper>
                 <Label>유튜브</Label>
-                <Youtube placeholder="링크를 복사해주세요."/>
+                <Youtube placeholder="링크를 복사해주세요." />
             </InputWrapper>
             <ImageWrapper>
                 <Label>사진첨부</Label>
@@ -148,9 +156,9 @@ export default function BoardWriteUI() {
             </ImageWrapper>
             <OptionWrapper>
                 <Label>메인설정</Label>
-                <RadioButton type="radio" id="youtube" name="radio-button"/>
+                <RadioButton type="radio" id="youtube" name="radio-button" />
                 <RadioLabel htmlFor="youtube">유튜브</RadioLabel>
-                <RadioButton type="radio" id="image" name="radio-button"/>
+                <RadioButton type="radio" id="image" name="radio-button" />
                 <RadioLabel htmlFor="image">사진</RadioLabel>
             </OptionWrapper>
             <ButtonWrapper>
