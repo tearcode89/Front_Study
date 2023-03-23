@@ -11,6 +11,7 @@ function MyApp({ Component }) {
     return (
         <>
             <ApolloProvider client={client}>
+                <div>이 영역은 _app.js의 영역입니다.</div>
                 <Component />
             </ApolloProvider>
         </>
