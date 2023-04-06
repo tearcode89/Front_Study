@@ -23,7 +23,13 @@ export default function StaticRoutedPage() {
         }
     })
 
+    console.log("=====================")
     console.log(data)
+    console.log("=====================")
+
+    const onClickMoveToEdit = () => {
+        router.push(`/08-05-boards/${router.query.CustomIndex}/edit`)
+    }
 
     return (
         <>
@@ -31,6 +37,7 @@ export default function StaticRoutedPage() {
             <div>작성자: {data ? data.fetchBoard.writer : '데이터가 아직 도착을 안했엉 ㅠㅠ'}</div>
             <div>타이틀: {data && data.fetchBoard.title}</div>
             <div>콘텐츠: {data?.fetchBoard.contents}</div>
+            <button onClick={onClickMoveToEdit}>수정하러 이동하기 </button>
         </>
     )
 }

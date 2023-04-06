@@ -7,7 +7,7 @@ export default function GraphqlMutationPage() {
     // HTML영역 (return 아래)
     return(
         <>
-            <BoardWrite/>
+            <BoardWrite isEdit={false}/>
         </>
     )
 }

@@ -18,7 +18,10 @@ export default function BoardWriteUI(props){
                 firstProps='30px'
                 secondProps='gold'
                 thridProps = {props.mycolor}
-                onClick={props.onClickSubmit}>GRAPHQL-API(동기) 요청하기</K.BlueButton><br/>
+                onClick={props.isEdit ? props.onClickUpdate : props.onClickSubmit}
+            >
+                {props.isEdit ? "수정하기" : "등록하기"}
+            </K.BlueButton><br/>
             <button onClick={() => props.madongsuk(true)}>동석이형 호출버튼</button>
             <button onClick={() => props.madongsuk(false)}>동석이형 귀가버튼</button>
             {props.dongsuk ? <div><DongsukImg src="/images/DongSuck.jpg"/></div> : <div></div>}
